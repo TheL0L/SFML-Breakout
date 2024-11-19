@@ -1,21 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include "game.h"
 
 int main()
 {
-    auto window = sf::RenderWindow({1024u, 576u}, "Breakout");
-    window.setFramerateLimit(144);
+    Game game;
+    game.run();
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event(); window.pollEvent(event);)
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-        
-        window.clear();
-        window.display();
-    }
+    return 0;
 }
