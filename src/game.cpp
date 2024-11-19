@@ -38,6 +38,32 @@ void Game::initGameObjects()
         paddle.getPosition().y - paddle.getSize().y / 2 - ball.getRadius() * 2
     );
     ball.setFillColor(sf::Color::White);
+    
+    initBricksLayout();
+}
+
+void Game::initBricksLayout()
+{
+    auto health = Config::bricksLayoutY;
+    auto const brickSize = sf::Vector2f(
+        Config::brickWidth + Config::brickMargin,
+        Config::brickHeight + Config::brickMargin
+    );
+    auto position = sf::Vector2f();
+    auto color = sf::Color::Red;
+
+    for (size_t row = 0; row < Config::bricksLayoutY; ++row)
+    {
+        for (size_t col = 0; col < Config::bricksLayoutX; ++col)
+        {
+            position = sf::Vector2f(
+                col * brickSize.x + Config::bricksLayoutOffsetX,
+                row * brickSize.y + Config::bricksLayoutOffsetY
+            );
+            bricks.emplace_back(position, health, color);
+        }
+        --health;
+    }
 }
 
 void Game::processEvents()
@@ -57,7 +83,10 @@ void Game::update()
 void Game::render()
 {
     window.clear(sf::Color::Black);
-    
+
+    for (const auto& brick : bricks)
+        brick.draw(window);
+
     window.draw(paddle);
     window.draw(ball);
 

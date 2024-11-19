@@ -14,4 +14,17 @@ namespace Config
 
     constexpr float paddleSpeed = 15.f;
     constexpr float ballSpeed = 10.f;
+
+    constexpr float brickWidth = 100.f;
+    constexpr float brickHeight = 35.f;
+    constexpr float brickMargin = 8.f;
+
+    constexpr float bricksLayoutCoverage = 0.55f;
+
+    constexpr size_t bricksLayoutX = windowWidth / (brickWidth + brickMargin);
+    constexpr size_t bricksLayoutY = windowHeight * bricksLayoutCoverage / (brickHeight + brickMargin);
+    constexpr size_t bricksCount = bricksLayoutX * bricksLayoutY;
+
+    constexpr float bricksLayoutOffsetX = (windowWidth - (brickWidth + brickMargin) * bricksLayoutX) * 0.5f;
+    constexpr float bricksLayoutOffsetY = ballRadius * 1.25f;
 }
