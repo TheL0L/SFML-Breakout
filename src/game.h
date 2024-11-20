@@ -24,6 +24,9 @@ private:
 
     void updatePaddle(float deltaTime);
     void updateBall(float deltaTime);
+    void checkCollisions();
+
+    void removeDestroyedBricks();
 
     sf::RenderWindow window;
 

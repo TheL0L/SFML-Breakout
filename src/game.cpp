@@ -96,6 +96,13 @@ void Game::update(float deltaTime)
 
     checkCollisions();
     removeDestroyedBricks();
+
+    if (bricks.size() == 0)
+    {  // game won
+        ball.setFillColor(sf::Color::Green);
+
+        initBricksLayout();
+    }
 }
 
 void Game::updatePaddle(float deltaTime)
@@ -134,6 +141,34 @@ void Game::updateBall(float deltaTime)
         ballVelocity.y = -abs(ballVelocity.y);
         ball.setFillColor(sf::Color::Red);
     }
+}
+
+void Game::checkCollisions()
+{
+    if (ball.getGlobalBounds().intersects(paddle.getGlobalBounds()))
+    {
+        ballVelocity.y = -ballVelocity.y;
+        ball.setPosition(ball.getPosition().x, paddle.getPosition().y - ball.getRadius() * 2);
+    }
+
+    for (auto& brick : bricks)
+    {
+        if (brick.isActive() && ball.getGlobalBounds().intersects(brick.getBoundingBox())) {
+            brick.takeHit(1);
+            ballVelocity.y = -ballVelocity.y;
+            break;
+        }
+    }
+}
+
+void Game::removeDestroyedBricks()
+{
+    bricks.erase(
+        std::remove_if(bricks.begin(), bricks.end(),
+            [](const Brick& brick) { return !brick.isActive(); }
+        ),
+        bricks.end()
+    );
 }
 
 void Game::render()
