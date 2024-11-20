@@ -10,10 +10,12 @@ Game::~Game() {}
 
 void Game::run()
 {
+    sf::Clock clock;
     while (window.isOpen())
     {
+        float deltaTime = clock.restart().asSeconds();
         processEvents();
-        update();
+        update(deltaTime);
         render();
     }
 }
@@ -75,9 +77,51 @@ void Game::processEvents()
     }
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
+    updatePaddle(deltaTime);
+    updateBall(deltaTime);
 
+    checkCollisions();
+    removeDestroyedBricks();
+}
+
+void Game::updatePaddle(float deltaTime)
+{
+    bool leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    bool rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+    if (leftPressed && rightPressed) paddleVelocity.x = 0;
+    else if (leftPressed) paddleVelocity.x = -Config::paddleSpeed;
+    else if (rightPressed) paddleVelocity.x = Config::paddleSpeed;
+    else paddleVelocity.x = 0;
+
+    paddle.move(paddleVelocity * deltaTime);
+
+    paddle.setPosition(ball.getPosition().x + ball.getRadius() - Config::paddleWidth * 0.5f, paddle.getPosition().y);
+
+    if (paddle.getPosition().x < 0.f)
+        paddle.setPosition(0.f, paddle.getPosition().y);
+    if (paddle.getPosition().x + paddle.getSize().x > window.getSize().x)
+        paddle.setPosition(window.getSize().x - paddle.getSize().x, paddle.getPosition().y);
+}
+
+void Game::updateBall(float deltaTime)
+{
+    ball.move(ballVelocity * deltaTime);
+
+    if (ball.getPosition().x < 0.f)
+        ballVelocity.x = abs(ballVelocity.x);
+    if (ball.getPosition().x + ball.getRadius() * 2 > window.getSize().x)
+        ballVelocity.x = -abs(ballVelocity.x);
+    if (ball.getPosition().y < 0.f)
+        ballVelocity.y = abs(ballVelocity.y);
+    
+    if (ball.getPosition().y > window.getSize().y - ball.getRadius() * 2)
+    {  // game over
+        ballVelocity.y = -abs(ballVelocity.y);
+        ball.setFillColor(sf::Color::Red);
+    }
 }
 
 void Game::render()

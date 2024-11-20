@@ -18,13 +18,19 @@ private:
     void initBricksLayout();
 
     void processEvents();
-    void update();
+    void update(float deltaTime);
     void render();
+
+    void updatePaddle(float deltaTime);
+    void updateBall(float deltaTime);
 
     sf::RenderWindow window;
 
     sf::RectangleShape paddle;
     sf::CircleShape ball;
+
+    sf::Vector2f paddleVelocity;
+    sf::Vector2f ballVelocity;
     
     std::vector<Brick> bricks;
 };
