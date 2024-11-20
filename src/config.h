@@ -12,8 +12,8 @@ namespace Config
 
     constexpr float paddleOffset = 35.f;
 
-    constexpr float paddleSpeed = 15.f;
-    constexpr float ballSpeed = 10.f;
+    constexpr float paddleSpeed = windowWidth * 0.45f;
+    constexpr float ballSpeed = windowHeight * 3.55f;
 
     constexpr float brickWidth = 100.f;
     constexpr float brickHeight = 35.f;
