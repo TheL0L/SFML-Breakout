@@ -3,7 +3,7 @@
 
 float getRandomValue(std::mt19937& randomEngine, float min, float max)
 {
-    std::uniform_real<float> dist(min, max);
+    std::uniform_real_distribution<float> dist(min, max);
     return dist(randomEngine);
 }
 
