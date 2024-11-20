@@ -14,6 +14,7 @@ public:
     bool isActive() const;
 
 private:
+    size_t maxHealth;
     size_t health;
     sf::RectangleShape shape;
 };
