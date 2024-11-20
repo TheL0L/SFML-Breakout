@@ -3,6 +3,7 @@
 #include "config.h"
 #include <vector>
 #include "brick.h"
+#include <random>
 
 class Game
 {
@@ -33,4 +34,6 @@ private:
     sf::Vector2f ballVelocity;
     
     std::vector<Brick> bricks;
+
+    std::mt19937 randomEngine;
 };

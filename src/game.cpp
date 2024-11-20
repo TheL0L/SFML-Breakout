@@ -1,4 +1,12 @@
 #include "game.h"
+#include <math.h>
+
+float getRandomValue(std::mt19937& randomEngine, float min, float max)
+{
+    std::uniform_real<float> dist(min, max);
+    return dist(randomEngine);
+}
+
 
 Game::Game() : window(sf::VideoMode(Config::windowWidth, Config::windowHeight), "Breakout")
 {
@@ -42,6 +50,10 @@ void Game::initGameObjects()
     ball.setFillColor(sf::Color::White);
     
     initBricksLayout();
+    
+    auto const angle = getRandomValue(randomEngine, 20, 160);
+    ballVelocity.x = Config::ballSpeed * sinf(angle);
+    ballVelocity.y = Config::ballSpeed * cosf(angle);
 }
 
 void Game::initBricksLayout()
