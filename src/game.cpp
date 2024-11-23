@@ -1,5 +1,5 @@
 #include "game.h"
-#include <math.h>
+#include <cmath>
 
 float getRandomValue(std::mt19937& randomEngine, float min, float max)
 {
@@ -52,8 +52,8 @@ void Game::initGameObjects()
     initBricksLayout();
     
     auto const angle = getRandomValue(randomEngine, 20, 160);
-    ballVelocity.x = Config::ballSpeed * sinf(angle);
-    ballVelocity.y = Config::ballSpeed * cosf(angle);
+    ballVelocity.x = Config::ballSpeed * std::sin(angle);
+    ballVelocity.y = Config::ballSpeed * std::cos(angle);
 }
 
 void Game::initBricksLayout()
