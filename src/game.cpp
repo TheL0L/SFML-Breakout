@@ -122,8 +122,6 @@ void Game::updatePaddle(float deltaTime)
 
     paddle.move(paddleVelocity * deltaTime);
 
-    paddle.setPosition(ball.getPosition().x + ball.getRadius() - Config::paddleWidth * 0.5f, paddle.getPosition().y);
-
     if (paddle.getPosition().x < 0.f)
         paddle.setPosition(0.f, paddle.getPosition().y);
     if (paddle.getPosition().x + paddle.getSize().x > window.getSize().x)
