@@ -1,4 +1,5 @@
 #include "game.h"
+#include "collision.h"
 #include <cmath>
 
 float getRandomValue(std::mt19937& randomEngine, float min, float max)
@@ -149,18 +150,38 @@ void Game::updateBall(float deltaTime)
 
 void Game::checkCollisions()
 {
-    if (ball.getGlobalBounds().intersects(paddle.getGlobalBounds()))
+    sf::Vector2f ballCenter = ball.getPosition() + sf::Vector2f(ball.getRadius(), ball.getRadius());
+
+    CollisionResult paddleCollision = Collision::checkCircleRectangleCollision(
+        ballCenter,
+        ball.getRadius(),
+        paddle.getPosition(),
+        paddle.getSize());
+
+    if (paddleCollision.collided)
     {
-        ballVelocity.y = -ballVelocity.y;
-        ball.setPosition(ball.getPosition().x, paddle.getPosition().y - ball.getRadius() * 2);
+        ballVelocity = Collision::reflect(ballVelocity, paddleCollision.normal);
+        ball.setPosition(ball.getPosition() + paddleCollision.normal * paddleCollision.penetration);
     }
 
     for (auto& brick : bricks)
     {
-        if (brick.isActive() && ball.getGlobalBounds().intersects(brick.getBoundingBox())) {
-            brick.takeHit(1);
-            ballVelocity.y = -ballVelocity.y;
-            break;
+        if (brick.isActive())
+        {
+            CollisionResult brickCollision = Collision::checkCircleRectangleCollision(
+                ballCenter,
+                ball.getRadius(),
+                brick.getPosition(),
+                brick.getSize()
+            );
+
+            if (brickCollision.collided)
+            {
+                ballVelocity = Collision::reflect(ballVelocity, brickCollision.normal);
+                ball.setPosition(ball.getPosition() + brickCollision.normal * brickCollision.penetration);
+                brick.takeHit(1);
+                break;
+            }
         }
     }
 }
