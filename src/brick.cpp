@@ -26,9 +26,19 @@ void Brick::draw(sf::RenderWindow& renderer) const
     renderer.draw(shape);
 }
 
-sf::FloatRect Brick::getBoundingBox() const
+sf::FloatRect Brick::getGlobalBounds() const
 {
     return shape.getGlobalBounds();
+}
+
+sf::Vector2f Brick::getPosition() const
+{
+    return shape.getPosition();
+}
+
+sf::Vector2f Brick::getSize() const
+{
+    return shape.getSize();
 }
 
 void Brick::takeHit(size_t damage)

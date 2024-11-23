@@ -9,7 +9,9 @@ public:
     ~Brick();
 
     void draw(sf::RenderWindow& renderer) const;
-    sf::FloatRect getBoundingBox() const;
+    sf::FloatRect getGlobalBounds() const;
+    sf::Vector2f getPosition() const;
+    sf::Vector2f getSize() const;
     void takeHit(size_t damage);
     bool isActive() const;
 
